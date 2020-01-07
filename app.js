@@ -1,6 +1,6 @@
 // тоглогчийн ээлжийг хадгалах хувьсагч
 // нэгдүгээр тоглогчийг 0, хоёрдугаар тоглогчийг 1 гэж тэмдэглэе.
-var activePlayer = 1;
+var activePlayer = 0;
 
 // тоглогчдийн цуглуулсан оноог хадгалах хувьсагч
 var scores = [0, 0];
@@ -21,5 +21,23 @@ document.querySelector(".btn-roll").addEventListener("click", function() {
   // энэ нь anonymous функц бөгөөд үүнийг програмд ганц удаа ганц газар дуудахад  ашигладаг. Anonymous функц нь нэргүй функц юм.
   var diceNumber = Math.floor(Math.random() * 6) + 1; // 1-6 - ийн хооронд санамсаргүй тоо авах хувьсагч
   diceDom.style.display = "block";
-  diceDom.src = "dice-" + diceNumber + ".png";
+  diceDom.src = "dice-" + diceNumber + ".png"; // шооны зургыг буусан тооноос хамааруулж өөрчлөх
+  // буусан тоо 1 - ээс ялгаатай бол идэвхтэй тоглогчийн ээлжийн оноог нэмж өгнө
+  if (diceNumber !== 1) {
+    roundScore = roundScore + diceNumber; // 1-ээс ялгаатай тоо буулаа, буусан тоог тоглогчид нэмж өгнө
+    document.getElementById("current-" + activePlayer).textContent = roundScore;
+  } else {
+    alert("тоглогчийн ээлж солигдлоо");
+    // 1 буусан тул тоглогчийн ээлжийг энэ хэсэгт сольж өгнө
+    roundScore = 0; // энэ тоглогчийн ээлжиндээ цуглуулсан оноог 0 болгоно.
+    document.getElementById("current-" + activePlayer).textContent = 0;
+    // тоглогчийн ээлжийг нөгөө тоглогч руу шилжүүлнэ.
+
+    activePlayer === 0 ? (activePlayer = 1) : (activePlayer = 0); // хэрэв идэвхтэй тоглогч нь 0 байвал идэвхтэй тоглогчийг 1 болго.
+    // улаан цэгийг шилжүүлэх
+    document.querySelector(".player-0-panel").classList.toggle("active");
+    document.querySelector(".player-1-panel").classList.toggle("active");
+    // шоог түр алга болго
+    diceDom.style.display = "none";
+  }
 });
